@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:aop="http://www.springframework.org/schema/aop"        
+    xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="
+    	http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+    	http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd                
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <context:annotation-config/>
+    
+	<!--Bean Definition-->
+	<context:component-scan base-package="com.skt.tfabric" use-default-filters="false">		
+		<context:include-filter type="annotation" expression="org.aspectj.lang.annotation.Aspect" />
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Service" />
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Component" />
+	</context:component-scan>
+	
+	<!-- 이메일 보내기 --> 
+	<bean id="mailSender" class ="org.springframework.mail.javamail.JavaMailSenderImpl" >
+	    <property name="host" value="email-smtp.us-east-1.amazonaws.com" />
+	    <property name="port" value="587" />
+	    <property name="username" value="AKIAINNZTXCPLOYIAOQQ" />
+	    <property name="password" value="AqLaJ5R3D//Ekhphr0d/0QlvGfsVQ60ogG1VHNcjczGw" />
+	    <property name="javaMailProperties">
+	    <props>
+	        <prop key="mail.smtp.starttls.enable">true</prop>
+	    </props>
+	    </property>
+	</bean>
+	
+	<!-- AOP ( Aspect Oriented Programing ) -->
+	<!-- @AOP 어노테이션을 활성화 시키기 위한 설정 -->
+	<!-- 
+		servlet-context와 context-application에 동시에 존재하는 이유
+		: 한곳에만 선언했을 경우 해당 영역에서만 처리하게 된다.
+		즉, Servlet-context에 선언했을 경우에는 WebApplicationContext에서만 처리하게 되며,
+		context-application에서만 선언했을 경우에는 ApplicationContext 내에서만 처리하기 때문이다?
+		The aspects and the beans to be applied needs to be in the same ApplicationContext but ApplicationContext is not aware of WebApplicationContext .
+	-->
+	<aop:aspectj-autoproxy proxy-target-class="true" />		
+
+</beans>

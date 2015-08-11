@@ -1,0 +1,5 @@
+---
+applications: 
+- name: hellowweb-spring-mysql
+  mem: 512M
+  path: target/hellowweb-spring-mysql-1.0.war
